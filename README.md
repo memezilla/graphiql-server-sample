@@ -8,7 +8,7 @@
 ### Installation
 
 1. `yarn` to install dependencies
-2. `createdb hilton` to create relevant databases
+2. create `hilton` database in mongodb
 3. `cp .env.example .env` to initialize your `.env` file
 4. `yarn dev` to run development environment
 5. `yarn migrations` to generate seed data
