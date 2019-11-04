@@ -2,10 +2,9 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
-import knex from "../database";
-import applyHooks from "../database/hooks";
-import runMigrations from "../database/migration-runner";
-import QueryContext from "./query-context";
+// import knex from "../database";
+// import runMigrations from "../database/migration-runner";
+import queryContext from "./query-context";
 import loadSchema from "./schema-loader";
 import { displayServer } from "./lib/util";
 
@@ -19,10 +18,12 @@ export function run(
 ) {
   const app = express();
 
+  /*
   const migrationPromise: any = skipMigrations
     ? Promise.resolve()
     : runMigrations();
   migrationPromise.then(() => applyHooks(knex));
+  */
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -45,7 +46,7 @@ export function run(
 
   const server = new ApolloServer({
     schema: loadSchema(),
-    context: new QueryContext(db.handle),
+    context: queryContext,
     formatError: (error: any) => ({
       message: error.message,
       details: error.originalError && error.originalError.details,

@@ -1,5 +1,10 @@
-const { env } = require('../config');
-const knexConfig = require('../knexfile');
-const knex = require('knex')(knexConfig[env]);
+const mongoose = require("mongoose");
+const { env, envConfig } = require("../config");
+const mongoConnectionUri = envConfig[env].connection;
 
-module.exports = knex;
+mongoose.connect(mongoConnectionUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+module.exports = mongoose;

@@ -1,31 +1,29 @@
-import QueryContext from '../../query-context';
-
 const resolvers = {
   Query: {
-    reservations(root: any, { sort }: any, context: QueryContext) {
-      return context.reservations.getAll(sort);
+    reservations: async (root: any, { sort }: any, context: any) => {
+      return await context.Reservations.find({})
+        .sort(
+          sort
+            ? {
+                [sort.field]: sort.direction
+              }
+            : {}
+        )
+        .exec();
     },
-    reservation(root: any, { id }: any, context: QueryContext) {
-      return context.reservations.getById(id);
-    },
+    reservation: async (root: any, { id }: any, context: any) => {
+      return await context.Reservations.findOne({ _id: id }).exec();
+    }
   },
   Mutation: {
-    reservationSave(root: any, { reservation }: any, context: QueryContext) {
-      return context.reservations
-        .save(reservation)
-        .then(([id]: any) => context.reservations.getById(id));
-        // .then(() => context.reservations.getById(reservation.id));
+    reservationSave: async (root: any, { reservation }: any, context: any) => {
+      const newReservation = new context.reservations(reservation);
+      return await newReservation.save();
     },
-    reservationRemove(root: any, { id }: any, context: QueryContext) {
-      return context.reservations
-        .getById(id)
-        .then((reservation: any) =>
-          context.reservations.remove(id).then(() => reservation)
-        );
-
-      // return context.reservations.remove(id).then(() => id);
-    },
-  },
+    reservationRemove: async (root: any, { id }: any, context: any) => {
+      return await context.reservations.findByIdAndDelete(id).exec();
+    }
+  }
 };
 
 export default resolvers;

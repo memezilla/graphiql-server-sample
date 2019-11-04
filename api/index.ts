@@ -1,4 +1,4 @@
-import knex from './connector';
-import { run } from './server';
+import connector from "./connector";
+import { run } from "./server";
 
-run(process.env, { handle: knex });
+run(process.env, { handle: connector });

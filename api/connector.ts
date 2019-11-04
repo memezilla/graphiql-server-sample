@@ -1,2 +1,2 @@
-const knex = require('../database');
-export default knex;
+const db = require("../database");
+export default db;
